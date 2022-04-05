@@ -2,6 +2,8 @@ const https = require("https");
 const http = require("http");
 const fs = require("fs");
 
+require("dotenv").config();
+
 function downloadFile(url, targetPath) {
   const get = url.includes("https://") ? https.get : http.get;
   return new Promise((resolve) => {
@@ -24,10 +26,14 @@ function downloadFile(url, targetPath) {
   });
 }
 
-const url = "http://localhost:8080/common.graphql";
+const url = process.env.REMOTE_GQL_URL;
 const targetFile = "remote-gql/schema.graphql";
 
 async function downloadCommonSchema() {
+  if (!url) {
+    console.error("REMOTE_GQL_URL env. var not set");
+  }
+
   const saved = await downloadFile(url, targetFile);
 
   if (saved) {

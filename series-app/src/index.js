@@ -6,6 +6,8 @@ const path = require("path");
 const resolvers = require("./resolvers");
 const SeriesAPI = require("./datasources/seriesAPI");
 
+require("dotenv").config();
+
 const commonTypeDefs = readFileSync(
   path.join("remote-gql/", "./schema.graphql"),
   {
@@ -16,8 +18,6 @@ const appTypeDefs = readFileSync(path.join("src/", "./schema.graphql"), {
   encoding: "utf-8"
 });
 const typeDefs = gql(commonTypeDefs + appTypeDefs);
-
-require("dotenv").config();
 
 const server = new ApolloServer({
   schema: buildSubgraphSchema({ typeDefs, resolvers }),
