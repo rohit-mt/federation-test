@@ -1,8 +1,8 @@
 {
   "name": "mt-gateway",
-  "version": "0.1.7",
+  "version": "0.1.9",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "bin": {
     "mt-gateway": "scripts/run.js"
   },
@@ -20,6 +20,7 @@
     "dotenv": "^10.0.0",
     "fs": "0.0.1-security",
     "graphql": "^15.6.1",
-    "nodemon": "^2.0.13"
+    "nodemon": "^2.0.13",
+    "yargs": "^17.4.0"
   }
 }
