@@ -6,7 +6,7 @@
   "scripts": {
     "prestart": "npm run sg:create",
     "start": "nodemon src/index.js",
-    "sg:create": "rover supergraph compose --config ./supergraph-config.yaml > supergraph.graphql"
+    "sg:create": "rover supergraph compose --config ./src/supergraph-config.yaml > supergraph.graphql"
   },
   "keywords": [],
   "author": "",

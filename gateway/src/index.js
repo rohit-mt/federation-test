@@ -25,7 +25,7 @@ const server = new ApolloServer({
   gateway
 });
 
-const port = 5000;
+const port = process.env.GATEWAY_PORT;
 
 server
   .listen({ port })

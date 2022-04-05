@@ -25,7 +25,7 @@ function downloadFile(url, targetPath) {
 }
 
 const url = "http://localhost:8080/common.graphql";
-const targetFile = "common.graphql";
+const targetFile = "remote-gql/schema.graphql";
 
 async function downloadCommonSchema() {
   const saved = await downloadFile(url, targetFile);

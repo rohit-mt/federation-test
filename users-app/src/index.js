@@ -1,10 +1,16 @@
 const { ApolloServer, gql } = require("apollo-server");
 const { buildSubgraphSchema } = require("@apollo/subgraph");
 const { readFileSync } = require("fs");
+const path = require("path");
 
-const typeDefs = gql(readFileSync("./schema.graphql", { encoding: "utf-8" }));
 const resolvers = require("./resolvers");
 const UsersAPI = require("./datasources/usersAPI");
+
+require("dotenv").config();
+
+const typeDefs = gql(
+  readFileSync(path.join("src", "./schema.graphql"), { encoding: "utf-8" })
+);
 
 const server = new ApolloServer({
   schema: buildSubgraphSchema({ typeDefs, resolvers }),
@@ -15,7 +21,7 @@ const server = new ApolloServer({
   }
 });
 
-const port = 5001;
+const port = process.env.PORT;
 const subgraphName = "Users";
 
 server
