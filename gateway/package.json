@@ -7,9 +7,9 @@
     "mt-gateway": "scripts/run.js"
   },
   "scripts": {
-    "prestart": "npm run sg:create",
+    "prestart": "npm run sg:compose",
     "start": "nodemon src/index.js",
-    "sg:create": "rover supergraph compose --config ./src/supergraph-config.yaml > supergraph.graphql"
+    "sg:compose": "rover supergraph compose --config ./src/supergraph-config.yaml > supergraph.graphql"
   },
   "keywords": [],
   "author": "",
