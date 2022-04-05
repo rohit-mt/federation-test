@@ -12,16 +12,12 @@ if (argv.env) {
 }
 
 switch (command) {
-  case "start": {
-    require("./start.js");
-    break;
-  }
-  case "config": {
+  case "config":
     require("./config.js");
     break;
-  }
-  default: {
+
+  case "start":
+  default:
     require("./start.js");
     break;
-  }
 }
