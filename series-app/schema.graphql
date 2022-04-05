@@ -1,0 +1,19 @@
+type Query {
+  allSeries: [series!]!
+  series(id: ID!): series
+}
+
+type series {
+  id: ID!
+  name: String!
+}
+
+extend type User @key(fields: "id") {
+  id: ID! @external
+  assignedSeries: [series!]!
+}
+
+type Response implements Error {
+  code: ErrorCode!
+  message: String!
+}

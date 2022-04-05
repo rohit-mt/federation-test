@@ -1,0 +1,22 @@
+{
+  "name": "gateway",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prestart": "npm run sg:create",
+    "start": "nodemon src/index.js",
+    "sg:create": "rover supergraph compose --config ./supergraph-config.yaml > supergraph.graphql"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/gateway": "^0.50.0",
+    "apollo-server": "^3.4.1",
+    "dotenv": "^10.0.0",
+    "fs": "0.0.1-security",
+    "graphql": "^15.6.1",
+    "nodemon": "^2.0.13"
+  }
+}

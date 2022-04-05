@@ -1,0 +1,11 @@
+interface Error {
+  code: ErrorCode!
+  message: String!
+}
+
+enum ErrorCode {
+  UNKNOWN_ERROR
+  NETWORK_ERROR
+  AUTHENTICATION_ERROR
+  SERVER_ERROR
+}

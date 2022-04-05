@@ -1,0 +1,18 @@
+[
+  { "id": "1", "name": "Series - Qwest Corporation" },
+  {
+    "id": "2",
+    "name": "Series - WisdomTree United Kingdom Hedged Equity Fund"
+  },
+  { "id": "3", "name": "Series - Great Southern Bancorp, Inc." },
+  {
+    "id": "4",
+    "name": "Series - PowerShares DWA Tactical Multi-Asset Income Portfolio"
+  },
+  { "id": "5", "name": "Series - Invesco Mortgage Capital Inc." },
+  { "id": "6", "name": "Series - Lakeland Financial Corporation" },
+  { "id": "7", "name": "Series - Armstrong Flooring, Inc." },
+  { "id": "8", "name": "Series - Genie Energy Ltd." },
+  { "id": "9", "name": "Series - Endologix, Inc." },
+  { "id": "10", "name": "Series - Ritter Pharmaceuticals, Inc." }
+]

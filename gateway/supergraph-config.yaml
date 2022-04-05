@@ -1,0 +1,11 @@
+subgraphs:
+  users-app:
+    routing_url: http://localhost:5001
+    schema:
+      # file: ../users-app/schema.graphql
+      subgraph_url: http://localhost:5001
+  series-app:
+    routing_url: http://localhost:5002
+    schema:
+      # file: ../series-app/schema.graphql
+      subgraph_url: http://localhost:5002
