@@ -1,12 +1,16 @@
 const { ApolloServer } = require("apollo-server");
 const { ApolloGateway, IntrospectAndCompose } = require("@apollo/gateway");
 const { readFileSync } = require("fs");
+const path = require("path");
 
-require("dotenv").config();
+require("dotenv").config({
+  path: path.join(__dirname, "../.env")
+});
 
 let supergraphSdl;
 
 if (process.env.NODE_ENV === "development") {
+  console.log("Creating in-memory supergraph for local development");
   supergraphSdl = new IntrospectAndCompose({
     subgraphs: [
       { name: "users-app", url: process.env.USERS_APP_URL },
@@ -14,7 +18,8 @@ if (process.env.NODE_ENV === "development") {
     ]
   });
 } else {
-  supergraphSdl = readFileSync("./supergraph.graphql").toString();
+  const superGraphPath = path.join(__dirname, "../supergraph.graphql");
+  supergraphSdl = readFileSync(superGraphPath).toString();
 }
 
 const gateway = new ApolloGateway({

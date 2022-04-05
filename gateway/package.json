@@ -1,8 +1,11 @@
 {
-  "name": "gateway",
-  "version": "1.0.0",
+  "name": "mt-gateway",
+  "version": "0.1.7",
   "description": "",
   "main": "index.js",
+  "bin": {
+    "mt-gateway": "scripts/run.js"
+  },
   "scripts": {
     "prestart": "npm run sg:create",
     "start": "nodemon src/index.js",
