@@ -15,7 +15,7 @@
   - `npx mt-gateway config`
 - Create your own config
   - `npx mt-gateway config > gateway.env`
-- Spin up gateway with custom env file
+- Spin up gateway with custom env file(application's .env can also be provided)
   - `npx mt-gateway start --env=gateway.env`
 
 ### Pipeline

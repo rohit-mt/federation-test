@@ -1,3 +1,5 @@
+# Todo: Mention repo url(will be helpful for contribution)
+
 interface Error {
   code: ErrorCode!
   message: String!
