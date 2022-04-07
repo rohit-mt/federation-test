@@ -19,3 +19,7 @@ type Response implements Error {
   code: ErrorCode!
   message: String!
 }
+
+type Mutation {
+  assignSeriesToUser(seriesId: String, userId: String): [series!]!
+}

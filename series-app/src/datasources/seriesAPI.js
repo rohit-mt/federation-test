@@ -1,5 +1,10 @@
+const path = require("path");
+const fs = require("fs");
+
 let series = require("./series.json");
-let assignedData = require("./assigned.json");
+
+const filePath = path.join(__dirname, "./assigned.json");
+let assignedData = require(filePath);
 
 class SeriesAPI {
   getAllSeries() {
@@ -16,6 +21,22 @@ class SeriesAPI {
       return userAssignedData.series.map((sId) => this.getSeries(sId));
     }
     return [];
+  }
+
+  assignSeriesToUser(seriesId, userId) {
+    const userAssignedData = assignedData.find((s) => s.id === userId);
+
+    if (userAssignedData) {
+      if (!userAssignedData.series.includes(seriesId)) {
+        userAssignedData.series.push(seriesId);
+      }
+    } else {
+      assignedData.push({ id: userId, series: [seriesId] });
+    }
+
+    fs.writeFileSync(filePath, JSON.stringify(assignedData, null, 2));
+
+    return this.getSeriesByUser(userId);
   }
 }
 
