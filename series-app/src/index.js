@@ -3,6 +3,7 @@ const { buildSubgraphSchema } = require("@apollo/subgraph");
 const { readFileSync } = require("fs");
 const path = require("path");
 
+const applyDirectives = require("./directives");
 const resolvers = require("./resolvers");
 const SeriesAPI = require("./datasources/seriesAPI");
 
@@ -20,7 +21,7 @@ const appTypeDefs = readFileSync(path.join("src/", "./schema.graphql"), {
 const typeDefs = gql(commonTypeDefs + appTypeDefs);
 
 const server = new ApolloServer({
-  schema: buildSubgraphSchema({ typeDefs, resolvers }),
+  schema: applyDirectives(buildSubgraphSchema({ typeDefs, resolvers })),
   dataSources: () => {
     return {
       seriesAPI: new SeriesAPI()
