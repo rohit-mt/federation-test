@@ -4,7 +4,8 @@
   "description": "2 apps 1 gateway 1 static server for serving common schema",
   "main": "index.js",
   "scripts": {
-    "install:all": "node ./install.js",
+    "postinstall": "npm run install-all",
+    "install-all": "node ./install.js",
     "start": "node ./start.js",
     "prestart": "npm run reset:db",
     "reset:db": "git restore series-app/src/datasources/assigned.json users-app/src/datasources/MOCK_DATA.json"

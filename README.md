@@ -8,7 +8,6 @@
 
 ```
 npm install
-npm install:all
 npm start
 ```
 
