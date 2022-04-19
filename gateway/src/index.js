@@ -6,6 +6,7 @@ const {
 } = require("@apollo/gateway");
 const { readFileSync } = require("fs");
 const path = require("path");
+const _ = require("lodash");
 
 const deepMerge = require("./deepMerge");
 
@@ -28,6 +29,23 @@ if (process.env.NODE_ENV === "development") {
   supergraphSdl = readFileSync(superGraphPath).toString();
 }
 
+function updateVariables(variables, data) {
+  const regex = /^\{\{(.*?)\}\}$/gm;
+  const modifiedVariables = JSON.parse(
+    JSON.stringify(variables, (key, value) => {
+      if (typeof value === "string") {
+        const v = regex.exec(value);
+        if (v) {
+          return _.get(data, v[1]);
+        }
+      }
+      return value;
+    })
+  );
+
+  return modifiedVariables;
+}
+
 class AuthenticatedDataSource extends RemoteGraphQLDataSource {
   willSendRequest(options) {
     console.log("------------------------------");
@@ -38,6 +56,15 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
 
     // options.context.rohit = 'xyz'
 
+    const { variables } = options.request;
+
+    if (variables) {
+      options.request.variables = updateVariables(
+        variables,
+        options.context.response
+      );
+    }
+
     console.log(options.request.query);
     console.log("------------------------------");
   }
@@ -46,16 +73,16 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
     const { response, context } = options;
 
     if (!context.response) {
-      context.response = [];
+      context.response = {};
     }
 
-    context.response.push(response.data);
+    // context.response.push(response.data);
 
-    // // deepMerge(context.response, response.data);
+    deepMerge(context.response, response.data);
 
     console.log(
       "🚀 ~ file: index.js ~ line 45 ~ AuthenticatedDataSource ~ didReceiveResponse ~ response.data",
-      response.data
+      context.response
     );
 
     return response;
