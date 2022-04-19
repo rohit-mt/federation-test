@@ -2,7 +2,7 @@
 
 - 2 apps
 - 1 gateway
-- 1 static server for serving common schema
+- 1 static server for serving common schema(not needed with fed. 2)
 
 ## Setup
 
