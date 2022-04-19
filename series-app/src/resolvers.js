@@ -9,6 +9,7 @@ const resolvers = {
   },
   Mutation: {
     assignSeriesToUser: (parent, { seriesId, userId }, ctx, info) => {
+      //   console.log("assignSeriesToUser", new Date().toISOString());
       return ctx.dataSources.seriesAPI.assignSeriesToUser(seriesId, userId);
     }
   },

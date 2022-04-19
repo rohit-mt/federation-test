@@ -8,9 +8,15 @@ const UsersAPI = require("./datasources/usersAPI");
 
 require("dotenv").config();
 
-const typeDefs = gql(
-  readFileSync(path.join("src", "./schema.graphql"), { encoding: "utf-8" })
-);
+const headerTypeDefs = `extend schema
+@link(url: "https://specs.apollo.dev/federation/v2.0",
+      import: ["@key", "@external", "@shareable"])`;
+
+const appTypeDefs = readFileSync(path.join("src/", "./schema.graphql"), {
+  encoding: "utf-8"
+});
+
+const typeDefs = gql(headerTypeDefs + appTypeDefs);
 
 const server = new ApolloServer({
   schema: buildSubgraphSchema({ typeDefs, resolvers }),

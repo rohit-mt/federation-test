@@ -8,7 +8,13 @@ const resolvers = {
     }
   },
   Mutation: {
-    createUser: (parent, { user }, ctx, info) => {
+    createUser: async (parent, { user }, ctx, info) => {
+      //   await sleep();
+      //   console.log(new Date().toISOString());
+      const users = ctx.dataSources.usersAPI.createUser(user);
+      return users;
+    },
+    createUser1: async (parent, { user }, ctx, info) => {
       const users = ctx.dataSources.usersAPI.createUser(user);
       return users;
     }
@@ -21,3 +27,11 @@ const resolvers = {
 };
 
 module.exports = resolvers;
+
+function sleep(delay = 30) {
+  return new Promise((r) => {
+    setTimeout(() => {
+      r(true);
+    }, delay);
+  });
+}

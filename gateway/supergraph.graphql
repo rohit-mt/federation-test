@@ -1,76 +1,109 @@
+
 schema
-  @core(feature: "https://specs.apollo.dev/core/v0.2"),
-  @core(feature: "https://specs.apollo.dev/join/v0.1", for: EXECUTION)
+  @link(url: "https://specs.apollo.dev/link/v1.0")
+  @link(url: "https://specs.apollo.dev/join/v0.2", for: EXECUTION)
 {
   query: Query
+  mutation: Mutation
 }
 
-directive @core(as: String, feature: String!, for: core__Purpose) repeatable on SCHEMA
-
-directive @join__field(graph: join__Graph, provides: join__FieldSet, requires: join__FieldSet) on FIELD_DEFINITION
+directive @join__field(graph: join__Graph!, requires: join__FieldSet, provides: join__FieldSet, type: String, external: Boolean, override: String, usedOverridden: Boolean) repeatable on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
 
 directive @join__graph(name: String!, url: String!) on ENUM_VALUE
 
-directive @join__owner(graph: join__Graph!) on INTERFACE | OBJECT
+directive @join__implements(graph: join__Graph!, interface: String!) repeatable on OBJECT | INTERFACE
 
-directive @join__type(graph: join__Graph!, key: join__FieldSet) repeatable on INTERFACE | OBJECT
+directive @join__type(graph: join__Graph!, key: join__FieldSet, extension: Boolean! = false, resolvable: Boolean! = true) repeatable on OBJECT | INTERFACE | UNION | ENUM | INPUT_OBJECT | SCALAR
 
-interface Error {
-  code: ErrorCode!
-  message: String!
-}
+directive @link(url: String, as: String, for: link__Purpose, import: [link__Import]) repeatable on SCHEMA
 
-enum ErrorCode {
-  AUTHENTICATION_ERROR
-  NETWORK_ERROR
-  SERVER_ERROR
-  UNKNOWN_ERROR
-}
-
-type Query {
-  allSeries: [series!]! @join__field(graph: SERIES_APP)
-  series(id: ID!): series @join__field(graph: SERIES_APP)
-  user(id: ID!): User @join__field(graph: USERS_APP)
-  users: [User!]! @join__field(graph: USERS_APP)
-}
-
-type Response implements Error {
-  code: ErrorCode!
-  message: String!
-}
-
-type User
-  @join__owner(graph: USERS_APP)
-  @join__type(graph: USERS_APP, key: "id")
-  @join__type(graph: SERIES_APP, key: "id")
+interface Error
+  @join__type(graph: SERIES_APP)
 {
-  assignedSeries: [series!]! @join__field(graph: SERIES_APP)
-  emailId: String! @join__field(graph: USERS_APP)
-  id: ID! @join__field(graph: USERS_APP)
-  name: String! @join__field(graph: USERS_APP)
-  username: String! @join__field(graph: USERS_APP)
+  code: ErrorCode!
+  message: String!
 }
 
-enum core__Purpose {
-  """
-  `EXECUTION` features provide metadata necessary to for operation execution.
-  """
-  EXECUTION
-
-  """
-  `SECURITY` features provide metadata necessary to securely resolve fields.
-  """
-  SECURITY
+enum ErrorCode
+  @join__type(graph: SERIES_APP)
+{
+  UNKNOWN_ERROR
+  NETWORK_ERROR
+  AUTHENTICATION_ERROR
+  SERVER_ERROR
 }
 
 scalar join__FieldSet
 
 enum join__Graph {
-  SERIES_APP @join__graph(name: "series-app" url: "http://localhost:5002")
-  USERS_APP @join__graph(name: "users-app" url: "http://localhost:5001")
+  SERIES_APP @join__graph(name: "series-app", url: "http://localhost:5002")
+  USERS_APP @join__graph(name: "users-app", url: "http://localhost:5001")
 }
 
-type series {
+scalar link__Import
+
+enum link__Purpose {
+  """
+  `SECURITY` features provide metadata necessary to securely resolve fields.
+  """
+  SECURITY
+
+  """
+  `EXECUTION` features provide metadata necessary for operation execution.
+  """
+  EXECUTION
+}
+
+type Mutation
+  @join__type(graph: SERIES_APP)
+  @join__type(graph: USERS_APP)
+{
+  assignSeriesToUser(seriesId: String, userId: String): [series!]! @join__field(graph: SERIES_APP)
+  createUser(user: UserInputDetails): User @join__field(graph: USERS_APP)
+  createUser1(user: UserInputDetails): User @join__field(graph: USERS_APP)
+}
+
+type Query
+  @join__type(graph: SERIES_APP)
+  @join__type(graph: USERS_APP)
+{
+  allSeries: [series!]! @join__field(graph: SERIES_APP)
+  series(id: ID!): series @join__field(graph: SERIES_APP)
+  users: [User!]! @join__field(graph: USERS_APP)
+  user(id: ID!): User @join__field(graph: USERS_APP)
+}
+
+type Response implements Error
+  @join__implements(graph: SERIES_APP, interface: "Error")
+  @join__type(graph: SERIES_APP)
+{
+  code: ErrorCode!
+  message: String!
+}
+
+type series
+  @join__type(graph: SERIES_APP)
+{
   id: ID!
   name: String!
+}
+
+type User
+  @join__type(graph: SERIES_APP, key: "id", extension: true)
+  @join__type(graph: USERS_APP, key: "id")
+{
+  id: ID!
+  assignedSeries: [series!]! @join__field(graph: SERIES_APP)
+  name: String! @join__field(graph: USERS_APP)
+  username: String! @join__field(graph: USERS_APP)
+  emailId: String! @join__field(graph: USERS_APP)
+}
+
+input UserInputDetails
+  @join__type(graph: USERS_APP)
+{
+  first_name: String!
+  last_name: String!
+  username: String!
+  emailId: String!
 }

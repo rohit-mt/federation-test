@@ -15,11 +15,25 @@ extend type User @key(fields: "id") {
   assignedSeries: [series!]!
 }
 
-type Response implements Error {
+type Mutation {
+  assignSeriesToUser(seriesId: String, userId: String): [series!]!
+}
+
+### Common testing(below not used anywhere)
+
+interface Error {
   code: ErrorCode!
   message: String!
 }
 
-type Mutation {
-  assignSeriesToUser(seriesId: String, userId: String): [series!]!
+enum ErrorCode {
+  UNKNOWN_ERROR
+  NETWORK_ERROR
+  AUTHENTICATION_ERROR
+  SERVER_ERROR
+}
+
+type Response implements Error {
+  code: ErrorCode!
+  message: String!
 }

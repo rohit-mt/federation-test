@@ -1,7 +1,13 @@
 const { ApolloServer } = require("apollo-server");
-const { ApolloGateway, IntrospectAndCompose } = require("@apollo/gateway");
+const {
+  ApolloGateway,
+  IntrospectAndCompose,
+  RemoteGraphQLDataSource
+} = require("@apollo/gateway");
 const { readFileSync } = require("fs");
 const path = require("path");
+
+const deepMerge = require("./deepMerge");
 
 require("dotenv").config({
   path: path.join(__dirname, "../.env")
@@ -22,11 +28,51 @@ if (process.env.NODE_ENV === "development") {
   supergraphSdl = readFileSync(superGraphPath).toString();
 }
 
+class AuthenticatedDataSource extends RemoteGraphQLDataSource {
+  willSendRequest(options) {
+    console.log("------------------------------");
+    console.log(
+      "🚀 ~ file: index.js ~ line 33 ~ AuthenticatedDataSource ~ willSendRequest ~ options",
+      options.results
+    );
+
+    // options.context.rohit = 'xyz'
+
+    console.log(options.request.query);
+    console.log("------------------------------");
+  }
+
+  didReceiveResponse(options) {
+    const { response, context } = options;
+
+    if (!context.response) {
+      context.response = [];
+    }
+
+    context.response.push(response.data);
+
+    // // deepMerge(context.response, response.data);
+
+    console.log(
+      "🚀 ~ file: index.js ~ line 45 ~ AuthenticatedDataSource ~ didReceiveResponse ~ response.data",
+      response.data
+    );
+
+    return response;
+  }
+}
+
 const gateway = new ApolloGateway({
-  supergraphSdl
+  supergraphSdl,
+  buildService: ({ url }) => {
+    return new AuthenticatedDataSource({ url });
+  }
 });
 
 const server = new ApolloServer({
+  context: ({ req }) => {
+    return { to: "rohit" };
+  },
   gateway
 });
 

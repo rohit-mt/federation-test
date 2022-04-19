@@ -1,0 +1,27 @@
+{
+  "name": "federation-test",
+  "version": "1.0.0",
+  "description": "2 apps 1 gateway 1 static server for serving common schema",
+  "main": "index.js",
+  "scripts": {
+    "install:all": "node ./install.js",
+    "start": "node ./start.js",
+    "prestart": "npm run reset:db",
+    "reset:db": "git restore series-app/src/datasources/assigned.json users-app/src/datasources/MOCK_DATA.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rohit-mt/federation-test.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rohit-mt/federation-test/issues"
+  },
+  "homepage": "https://github.com/rohit-mt/federation-test#readme",
+  "dependencies": {
+    "concurrently": "^7.1.0",
+    "kill-port": "^1.6.1"
+  }
+}

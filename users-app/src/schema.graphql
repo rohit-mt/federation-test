@@ -12,6 +12,7 @@ type User @key(fields: "id") {
 
 type Mutation {
   createUser(user: UserInputDetails): User
+  createUser1(user: UserInputDetails): User
 }
 
 input UserInputDetails {
